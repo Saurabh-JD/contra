@@ -16,6 +16,13 @@ let right_key_pressed = false;
 let left_key_pressed = false;
 let up_key_pressed = false;
 let down_key_pressed = false;
+//touch
+const dPadUp = document.querySelector('.d-pad-up');
+const dPadLeft = document.querySelector('.d-pad-left');
+const dPadDown = document.querySelector('.d-pad-down');
+const dPadRight = document.querySelector('.d-pad-right');
+
+
 
 //initial state
 
@@ -75,6 +82,49 @@ class Player{
 
 let player  = new Player(player_image);
 
+//touch event for mobile
+dPadUp.addEventListener('touchstart', () => {
+	up_key_pressed = true;
+  // Handle touchstart event for up button
+});
+
+dPadLeft.addEventListener('touchstart', () => {
+	left_key_pressed = true;
+	initial_state = "left";
+  // Handle touchstart event for left button
+});
+
+dPadDown.addEventListener('touchstart', () => {
+	down_key_pressed = true;
+  // Handle touchstart event for down button
+});
+
+dPadRight.addEventListener('touchstart', () => {
+	right_key_pressed = true;
+	initial_state = "right";
+  // Handle touchstart event for right button
+});
+dPadUp.addEventListener('touchend', () => {
+	up_key_pressed = false;
+  // Handle touchend event for up button
+});
+
+dPadLeft.addEventListener('touchend', () => {
+	left_key_pressed = false;
+  // Handle touchend event for left button
+});
+
+dPadDown.addEventListener('touchend', () => {
+	down_key_pressed = false;
+  // Handle touchend event for down button
+});
+
+dPadRight.addEventListener('touchend', () => {
+	right_key_pressed = false;
+  // Handle touchend event for right button
+});
+
+//keyboard events for pc
 document.addEventListener("keydown", (e)=>{
     switch(e.key){
         case "ArrowRight":
