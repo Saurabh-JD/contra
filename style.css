@@ -38,98 +38,17 @@ body {
   color: #000;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
-
-.a-button {
-  left: 10%;
+.d-pad-up{
+	display: flex;
+    position: relative;
+    left: 28px;
+	}
+.d-pad-down{
+    display: flex;
+    position: absolute;
+    left: 28px;
 }
-
-.b-button {
-  left: 30%;
-}
-
-.x-button {
-  left: 50%;
-}
-
-.y-button {
-  left: 70%;
-}
-
-.d-pad {
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  bottom: 10%;
-  left: 25%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.d-pad button {
-  width: 33.33%;
-  height: 33.33%;
-  position: relative;
-  background-color: #fff;
-  border: 2px solid #000;
-  border-radius: 50%;
-  font-size: 24px;
-  color: #000;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.d-pad button:focus {
-  outline: none;
-}
-
-.d-pad button i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.d-pad-up {
-  margin: 0 auto 10px;
-}
-
-.d-pad-left {
-  margin-right: 10px;
-}
-
-.d-pad-right {
-  margin-left: 10px;
-}
-
-.thumbsticks {
-  position: absolute;
-  bottom: 10%;
-  right: 25%;
-  display: flex;
-}
-
-.thumbstick {
-  width: 50px;
-  height: 50px;
-  border: border: 2px solid #000;
-border-radius: 50%;
-position: relative;
-}
-
-.thumbstick-inner {
-width: 20px;
-height: 20px;
-background-color: #000;
-border-radius: 50%;
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-}
-
-.left-thumbstick {
-margin-right: 20px;
-}
-
-.right-thumbstick {
-margin-left: 20px;
+.d-pad-right{
+    position: absolute;
+    left: 61px;
 }
