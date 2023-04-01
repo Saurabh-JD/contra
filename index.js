@@ -186,7 +186,6 @@ document.addEventListener("keydown", (e)=>{
             break;
         case "ArrowLeft":
 		left_key_pressed = true;
-		initial_state = "left";
             break;
         case "ArrowUp":
             up_key_pressed = true;
