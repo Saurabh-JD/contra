@@ -1,8 +1,17 @@
+*{
+    -webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+-o-user-select: none;
+user-select: none;
+}
 body {
     margin: 0;
     padding: 0;
     position: relative;
-	touch-action: manipulation;
+    touch-action: manipulation;
+
   }
   
   canvas {
@@ -40,16 +49,24 @@ body {
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 .d-pad-up{
+	padding: 4vh;
 	display: flex;
     position: relative;
-    left: 28px;
+    left: 46px;
 	}
 .d-pad-down{
+		padding: 4vh;
     display: flex;
     position: absolute;
-    left: 28px;
+    left: 46px;
 }
+.d-pad-left{
+	
+		padding: 4vh;
+}
+
 .d-pad-right{
+		padding: 4vh;
     position: absolute;
-    left: 61px;
+    left: 100px;
 }
