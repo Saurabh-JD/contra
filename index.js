@@ -17,11 +17,15 @@ let right_key_pressed = false;
 let left_key_pressed = false;
 let up_key_pressed = false;
 let down_key_pressed = false;
+let jump_key_pressed = false;
+let player_in_air = false;
+let player_jump_ani = false;
 //touch
 const dPadUp = document.querySelector('.d-pad-up');
 const dPadLeft = document.querySelector('.d-pad-left');
 const dPadDown = document.querySelector('.d-pad-down');
 const dPadRight = document.querySelector('.d-pad-right');
+const dPads = document.querySelector('.d-pad-s');
 
 
 
@@ -41,11 +45,13 @@ class Player{
         this.dwidth = 47;
         this.dheight = 58;
         this.dx = 80;
-	this.dy = 180;
+	this.dy = 0;
 	this.x_limit = 27;
 	this.x_animation_value = 27;
 	this.x_default = 27;
 	this.dx_increse = 13;
+	this.velocity = 0;
+	this.gravity =5;
      };
     update(){
        if(this.x >= this.x_limit){
@@ -53,14 +59,30 @@ class Player{
        }
        else if(initial_state == "left"){
 	       this.y = 175;
-	       this.x_animation_value = 27;
-		this.x += this.x_animation_value;
 	}
 
        else{
 	       this.x += this.x_animation_value;
-       		    }
+       		    };
+       
+       
     };
+    colision(platform){
+	    if(this.dy + this.dheight + this.velocity <= platform.y){
+		    this.velocity += this.gravity;
+		    this.dy += this.velocity;
+	    }else if(this.dy + this.dheight + 20 +this.velocity <= HEIGHT){
+
+
+	       console.log(platform.y);
+	       this.velocity += this.gravity;
+	       this.dy += this.velocity;
+
+       }else{
+	       this.velocity = 0
+       };
+	    
+    }
     contoller(){
 	    if(right_key_pressed && up_key_pressed){
 
@@ -74,11 +96,22 @@ class Player{
 		    this.dheight = 58;
 		    this.x_animation_value = 25;
 
+	    }else if(player_jump_ani && !player_in_air && right_key_pressed ){
+		    this.x_limit = 67;
+		    this.y = 335;
+		    this.dx_increse = 13;
+		    if(this.dx < 400){this.dx += this.dx_increse}
+		    this.width = 22;
+		    this.height = 24;
+		    this.dwidth = 42;
+		    this.dheight = 44;
+		    this.x_animation_value = 21.5;
+		    
 	    }else if(right_key_pressed){
 		    this.x_limit = 91;
 		    this.y = 126; 
 		    this.width = 22;
-		    this.dx_increse = 13
+		    this.dx_increse = 13;
 		    if(this.dx < 400){this.dx += this.dx_increse}
 		    this.height = 38;
 		    this.dwidth = 42;
@@ -89,13 +122,23 @@ class Player{
 		    this.x_limit = 91;
 		    this.y = 293; 
 		    this.width = 22;
-		    if(this.dx +this.width <= 0){this.dx_increse = 0};
+		    if(this.dx + this.width <= 0){this.dx_increse = 0};
 		    this.dx -= this.dx_increse
 		    this.height = 38;
 		    this.dwidth = 42;
 		    this.dheight = 58;
 		    this.x_animation_value = 23;
-	    }else{
+		    
+	    }else if(player_jump_ani && !player_in_air){
+		    this.x_limit = 67;
+		    this.y = 335; 
+		    this.width = 22;
+		    this.height = 24;
+		    this.dwidth = 42;
+		    this.dheight = 44;
+		    this.x_animation_value = 21.5;
+	    }
+	    else{
 		    this.x_limit = 27;
 		    if(initial_state == "left"){this.y = 175;}else{this.y = 10};
 		    this.width = 27;
@@ -103,9 +146,8 @@ class Player{
 		    this.dwidth = 47;
 		    this.dheight = 58;
 		    this.x_default = 0;
-		    this.x_animation_value = 27;
+		    this.x_animation_value = 0;
 	    }
-	    console.log(this.dx)
     };
     draw(){
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height, this.dx, this.dy, this.dwidth, this.dheight)
@@ -140,6 +182,21 @@ class Background{
 	};
 }
 let background  = new Background(background_image);
+//making platform
+class Platform{
+	constructor(){
+		this.x = 85;
+		this.y = 440;
+		this.width = 800;
+		this.height = 10;
+	}
+	draw(){
+		ctx.fillRect(this.x, this.y, this.width, this.height)
+	}
+}
+let platform  = new Platform(background_image);
+
+
 
 //touch event for mobile
 dPadUp.addEventListener('touchstart', () => {
@@ -158,6 +215,13 @@ dPadRight.addEventListener('touchstart', () => {
 	right_key_pressed = true;
 	initial_state = "right";
 });
+dPads.addEventListener('touchstart', () => {
+	player_jump_ani = true;
+	if(!jump_key_pressed && player_in_air){jump_key_pressed = true;
+	player.velocity -= 30};
+});
+
+
 dPadUp.addEventListener('touchend', () => {
 	up_key_pressed = false;
 });
@@ -174,6 +238,9 @@ dPadDown.addEventListener('touchend', () => {
 dPadRight.addEventListener('touchend', () => {
 	right_key_pressed = false;
 	initial_state = "right";
+});
+dPads.addEventListener('touchend', () => {
+	jump_key_pressed = false;
 });
 
 //keyboard events for pc
@@ -193,6 +260,11 @@ document.addEventListener("keydown", (e)=>{
         case "ArrowDown":
             down_key_pressed = true;
 	    break;
+	case "s":
+		player_jump_ani = true;
+		if(!jump_key_pressed && player_in_air){jump_key_pressed = true;
+		player.velocity -= 30};
+		break;
 	default:
 		break;
     }
@@ -214,10 +286,20 @@ document.addEventListener("keyup", (e)=>{
         case "ArrowDown":
             down_key_pressed = false;
 	    break;
+	case "s":
+		jump_key_pressed = false;
+		break;
 	default:
 		break;
     }
 })
+
+//platform detection
+    function platform_colision(){
+	    if(player.dy >= platform.y ){
+		    player.dy = platform.y
+	    }
+    }
 
 
 //main animation
@@ -226,8 +308,13 @@ function main(){
     background.draw();
     player.draw();
     player.contoller();
+    platform.draw();
     player.update();
+    player.colision(platform);
     background.update(player);
+    if(player.velocity == 0){
+	    player_in_air = true;
+    }else{player_in_air = false;}
     
 };
-setInterval(main, 100);
+setInterval(main, 60);
