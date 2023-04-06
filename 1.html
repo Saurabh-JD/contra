@@ -1,0 +1,135 @@
+<html>
+    <head></head>
+    <style>
+        canvas {
+            background-color: aliceblue;
+        }
+    </style>
+    <body>
+        <canvas width="600px" height="500px" id="canvas"></canvas>
+        <script>
+               let canvas = document.getElementById("canvas");
+               let c_w = 600;
+               let c_h = 500;
+               let ctx = canvas.getContext("2d");
+             let right = false;
+             let left = false;
+             let gravity = 1;
+               class Player {
+            constructor(){
+               this.x = 10;
+               this.y = 10;
+               this.width = 50;
+               this.height = 50;
+               this.yvelocity = 0;
+               this.xvelocity = 0;
+
+
+            }
+            update(){
+            this.y += this.yvelocity;
+            this.x += this.xvelocity;
+            this.draw();
+            this.controller();
+             this.yvelocity += gravity;
+
+             if(this.y + this.height + this.yvelocity <= c_h
+               ){
+            this.y += this.yvelocity;
+             }else {
+             this.yvelocity = 0}
+
+            };
+            controller(){
+
+            if(right){
+            this.xvelocity += 2;
+            }else if(left){
+            this.xvelocity -= 2;
+
+            }else{
+            this.xvelocity = 0}
+            };
+
+            draw(){
+
+            ctx.fillStyle = "red"
+            ctx.fillRect(this.x, this.y , this.width , this.height);
+            }
+
+            }
+               let player = new Player();
+
+            class Platform{
+            constructor(x, y){
+            this.x = x;
+            this.y = y;
+            this.width = 100;
+            this.height = 30;
+            }
+            draw(){
+            ctx.fillStyle = "blue";
+            ctx.fillRect(this.x, this.y, this.width, this.height)
+            }
+            }
+            //let platform = new Platform();
+            let platfo = [new Platform(85, 440), new Platform(400,300)]
+            document.addEventListener("keydown", (e) =>{
+
+            switch(e.key){
+            case "s":
+            player.yvelocity -= 20;
+            break;
+            case "ArrowRight":
+            right = true;
+            break;
+            case "ArrowLeft":
+            left = true;
+            break;
+            }
+            })
+            document.addEventListener("keyup", (e) =>{
+
+            switch(e.key){
+            case "ArrowRight":
+            right = false;
+            break;
+            case "ArrowLeft":
+            left = false;
+            break;
+            }
+            })
+
+
+
+
+
+               function animate(){
+               ctx.clearRect(0, 0, 600, 500);
+
+
+               //platform.draw();
+               platfo.forEach( (platform)=>{
+               platform.draw();
+
+                if(
+                   player.y + player.height <= platform.y  &&
+                   player.x + player.width >= platform.x &&
+                   player.y  + player.yvelocity >= platform.y &&
+                   player.x <= platform.x + platform.width
+                  ){
+			gravity=0;
+                player.yvelocity = 0;
+               
+             console.log("stop");
+            }
+                })
+
+            player.update();
+
+               window.requestAnimationFrame(animate);
+            }
+               animate();
+        </script>
+    </body>
+</html>
